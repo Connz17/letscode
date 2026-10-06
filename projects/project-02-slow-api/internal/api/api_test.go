@@ -35,6 +35,20 @@ func TestProductsEndpoints(t *testing.T) {
 			t.Errorf("%s: got %d, want %d", tc.path, rec.Code, tc.code)
 		}
 	}
+
+	products, err := store.FindProducts(db, "", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(products) != 3 {
+		t.Fatalf("got %d products, want %d", len(products), 3)
+	}
+	if products[0].ReviewCount != 3 {
+		t.Fatalf("got review_count %d, want %d", products[0].ReviewCount, 3)
+	}
+	if products[0].AverageRating != 4 {
+		t.Fatalf("got average_rating %.2f, want %.2f", products[0].AverageRating, 4.0)
+	}
 }
 
 func BenchmarkListProducts(b *testing.B) {
